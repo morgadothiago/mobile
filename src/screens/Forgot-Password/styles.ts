@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    paddingHorizontal: 20,
-
+    padding: 20,
+    gap: 10,
     backgroundColor: theme.colors.primary,
-    height: '60%',
+    height: '80%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     justifyContent: 'space-evenly',

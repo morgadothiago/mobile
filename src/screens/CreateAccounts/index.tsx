@@ -89,7 +89,6 @@ export default function CreateAccountsScreen() {
 
         <KeyboardAvoidingView behavior='padding' style={styles.form}>
           <View style={styles.formContent}>
-            <Text style={styles.formTitle}>Email</Text>
             <View>
               <Controller
                 control={control}

@@ -10,21 +10,14 @@ const styles = StyleSheet.create({
 
 
   },
-  header: {
-    padding: 25,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-    gap: 10,
-  },
   form: {
-    padding: 25,
-    gap: 10,
+
+    gap: 6,
     backgroundColor: theme.colors.primary,
     height: '70%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   formContent: {
     gap: 10,
@@ -51,7 +44,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 79,
     borderRadius: 50,
-    marginBottom: 50,
+    marginBottom: 100,
     gap: 5,
   },
   error: {
