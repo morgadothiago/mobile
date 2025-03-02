@@ -1,6 +1,7 @@
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 import type { IErrorResponse, ILoginResponse } from '../types/apiServicesType';
 import type { IRecoveryCode } from '../types/recovery.type';
+import type { IVerifyRecoveryCodeResponse } from '../types/verifyRecoveryCode.type';
 
 
 
@@ -32,6 +33,11 @@ class apiServices {
   async sendEmailRecovery(email: string): Promise<IRecoveryCode | IErrorResponse> {
     return this.api.post('/auth/recovery-code', { email })
       .then(this.getResponse<IRecoveryCode>)
+      .catch(this.getError);
+  }
+  async verifyRecoveryCode(codigo: string, email: string): Promise<IVerifyRecoveryCodeResponse | IErrorResponse> {
+    return this.api.post('/auth/verify-recovery-code', { codigo, email })
+      .then(this.getResponse<IVerifyRecoveryCodeResponse>)
       .catch(this.getError);
   }
 

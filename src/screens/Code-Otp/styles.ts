@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontsRoboto.Regular,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingBottom: 20,
+    paddingBottom: 15,
     paddingTop: 86
   },
 
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     borderRadius: 50,
-    marginBottom: 50,
+    marginBottom: 100,
     gap: 15,
   },
   error: {

@@ -63,7 +63,7 @@ export default function ForgotPasswordScreen() {
         }, 2000);
 
         setValue('email', '');
-        console.log('To aqui');
+
       }
 
       return;

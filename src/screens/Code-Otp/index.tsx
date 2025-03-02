@@ -1,4 +1,4 @@
-import { ImageBackground, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { ImageBackground, Keyboard, Text, TouchableWithoutFeedback, View, } from 'react-native';
 
 import styles from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -14,10 +14,16 @@ import { useEffect, useState } from 'react';
 
 import apiServices from '../../services/api';
 import CustomToast from '../../components/CustomToast';
+import { isLoading } from 'expo-font';
+import { ERoutes } from '../../router/mainStacks';
+import { NavigationRoot } from '../../utils';
 
-type CodeOtpData = {
+
+type code = {
   code?: string;
 }
+
+
 
 const CodeOtpSchema = yup.object().shape({
   code: yup
@@ -28,6 +34,7 @@ const CodeOtpSchema = yup.object().shape({
 });
 
 export default function CodeOtpScreen() {
+  const [isLoading, setIsLoading] = useState(false);
   const [isTypeToast, setIsTypeToast] = useState<'success' | 'error'>('success');
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -36,14 +43,44 @@ export default function CodeOtpScreen() {
   const [time, setTime] = useState(30);
 
   const navigation = useNavigation();
-  const { control, handleSubmit, formState: { errors } } = useForm<CodeOtpData>({
+  const { control, handleSubmit, formState: { errors } } = useForm<code>({
     resolver: yupResolver(CodeOtpSchema),
     defaultValues: {
       code: '0',
     },
   });
-  const onSubmit = (data: CodeOtpData) => {
-    console.log(data);
+  const onSubmit = async (data: code) => {
+    setIsLoading(true);
+    const verifyRecoveryCode = await apiServices.verifyRecoveryCode(data.code, email);
+    setIsLoading(false);
+
+    console.log(verifyRecoveryCode);
+
+    if ('status' in verifyRecoveryCode) {
+      if (verifyRecoveryCode.status === 422) {
+        // Utilizar Object.entries
+      }
+      setToastVisible(true);
+      setIsTypeToast('error');
+      setToastMessage(verifyRecoveryCode.message as string);
+
+      return
+    }
+
+    // Sucesso
+    setToastVisible(true);
+    setIsTypeToast('success');
+    setToastMessage('Email enviado com sucesso');
+
+
+    setTimeout(() => {
+
+      NavigationRoot(navigation, ERoutes.ChangePassword, {
+        recoveryToken: verifyRecoveryCode.recoveryToken
+      })
+    }, 2000);
+
+
   }
   const startTimer = () => {
     const interval = setInterval(() => {
@@ -101,7 +138,10 @@ export default function CodeOtpScreen() {
             </View>
 
 
-            <View>
+            <View style={{
+
+              width: '46%',
+            }}>
               {
                 !isTimeOut ? <Text>Aguarde {time} segundos</Text> : <Link title='Reenviar código' onPress={sendNewCode} />
               }
@@ -109,7 +149,7 @@ export default function CodeOtpScreen() {
           </View>
 
           <View style={styles.footer}>
-            <Button title='Enviar' onPress={handleSubmit(onSubmit)} />
+            <Button title='Enviar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
             <Link title='Ainda nao tem conta ?' onPress={() => navigation.navigate('CreateAccounts' as never)} />
           </View>
 

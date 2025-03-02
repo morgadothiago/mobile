@@ -14,20 +14,17 @@ const OtpInput = ({ onChangeText, onBlur, value, style, isValid }: OtpInputProps
   const inputRefs = useRef<TextInput[]>([]);
 
   const handleChange = (text: string, index: number) => {
-    if (/^[0-9]*$/.test(text) || text === '') {
-      const newOtp = [...otp];
-      newOtp[index] = text;
-      setOtp(newOtp);
-      onChangeText(newOtp.join(''));
 
+    const newOtp = [...otp];
+    newOtp[index] = text;
+    setOtp(newOtp);
+    onChangeText(newOtp.join(''));
 
-      console.log("Aqui", otp);
-
-      // Move to next input if value entered
-      if (text && index < 3) {
-        inputRefs.current[index + 1]?.focus();
-      }
+    // Move to next input if value entered
+    if (text && index < 3) {
+      inputRefs.current[index + 1]?.focus();
     }
+
   };
 
   const handleKeyPress = (event: any, index: number) => {

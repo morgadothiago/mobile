@@ -11,6 +11,7 @@ import CodeOtpScreen from '../../screens/Code-Otp';
 import ReceitaScreen from '../../screens/AuthScreens/ReceitaScreen';
 import PrepareScreen from '../../screens/AuthScreens/Prepare';
 import { useAuth } from '../../context/AuthContext';
+import ChangePasswordScreen from '../../screens/ChangePassword';
 
 export enum ERoutes {
   Intro = 'Intro',
@@ -20,6 +21,7 @@ export enum ERoutes {
   ReceitaScreen = 'ReceitaScreen',
   Product = 'Product',
   CodeOtp = 'CodeOtp',
+  ChangePassword = 'ChangePassword',
   Home = 'Home',
   Prepare = 'Prepare',
 }
@@ -30,6 +32,8 @@ export type RootStackParamList = {
   [ERoutes.ForgotPassword]: undefined;
   [ERoutes.CodeOtp]: undefined;
   [ERoutes.Prepare]: undefined;
+  [ERoutes.ChangePassword]: undefined;
+
 };
 
 const Stack = createNativeStackNavigator();
@@ -53,6 +57,8 @@ export function MainStacks() {
             <Stack.Screen name={ERoutes.CreateAccounts} component={CreateAccountsScreen} />
             <Stack.Screen name={ERoutes.ForgotPassword} component={ForgotPasswordScreen} />
             <Stack.Screen name={ERoutes.CodeOtp} component={CodeOtpScreen} />
+            <Stack.Screen name={ERoutes.Product} component={ProductScreen} />
+            <Stack.Screen name={ERoutes.ChangePassword} component={ChangePasswordScreen} />
           </>
         ) : (
           <>
