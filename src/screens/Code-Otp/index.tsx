@@ -1,4 +1,4 @@
-import { ImageBackground, Keyboard, Text, TouchableWithoutFeedback, View, } from 'react-native';
+import { ImageBackground, Keyboard, KeyboardAvoidingView, Text, TouchableWithoutFeedback, View, } from 'react-native';
 
 import styles from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -18,12 +18,9 @@ import { isLoading } from 'expo-font';
 import { ERoutes } from '../../router/mainStacks';
 import { NavigationRoot } from '../../utils';
 
-
 type code = {
   code?: string;
 }
-
-
 
 const CodeOtpSchema = yup.object().shape({
   code: yup
@@ -33,7 +30,7 @@ const CodeOtpSchema = yup.object().shape({
     .max(4, 'Codigo invalido'),
 });
 
-export default function CodeOtpScreen() {
+export default function SignInScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [isTypeToast, setIsTypeToast] = useState<'success' | 'error'>('success');
   const [toastVisible, setToastVisible] = useState(false);
@@ -115,12 +112,12 @@ export default function CodeOtpScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ImageBackground source={require('../../assets/img/Image.png')} style={styles.container}>
-        <View >
+      <ImageBackground source={require('../../assets/img/Image.png')} style={styles.container} resizeMode='cover'>
+        <View>
           <Header title='Verificação' />
         </View>
+        <KeyboardAvoidingView behavior='padding' style={styles.form}>
 
-        <View style={styles.form}>
           <View style={styles.formContent}>
             <Text style={styles.formTitle}>Informe seu email para enviarmos o código de verificação..</Text>
             <View>
@@ -150,11 +147,12 @@ export default function CodeOtpScreen() {
 
           <View style={styles.footer}>
             <Button title='Enviar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
-            <Link title='Ainda nao tem conta ?' onPress={() => navigation.navigate('CreateAccounts' as never)} />
+
           </View>
 
 
-        </View>
+
+        </KeyboardAvoidingView>
 
         {toastVisible && (
           <CustomToast
@@ -164,8 +162,8 @@ export default function CodeOtpScreen() {
             onDismiss={() => setToastVisible(false)}
           />
         )}
-
       </ImageBackground>
+
     </TouchableWithoutFeedback>
   );
 }
