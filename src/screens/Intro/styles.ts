@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.primary,
-    padding: 20,
+    padding: 25,
 
   },
   background: {
@@ -49,9 +49,10 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     padding: width * 0.07,
+    paddingBottom: 100
   },
   btnSignIn: {
-    width: '90%',
+    width: '80%',
     height: height * 0.08,
     borderRadius: 40,
     alignItems: 'center',
@@ -60,8 +61,8 @@ export const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: height * 0.03,
-    padding: width * 0.07,
+    bottom: height * 0.07,
+    padding: width * 0.05,
   },
   footerText: {
     color: theme.colors.btnBackground,

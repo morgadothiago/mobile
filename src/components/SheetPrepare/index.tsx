@@ -6,7 +6,7 @@ import RadionButton from '../RadionButton';
 import { theme } from '../../global/theme';
 import { styles } from './styles';
 
-const App = ({children}: {children: React.ReactNode}) => {
+export const BottmSheetModal = ({ children }: { children: React.ReactNode }) => {
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleSheetChanges = useCallback((index: number) => {
@@ -19,20 +19,16 @@ const App = ({children}: {children: React.ReactNode}) => {
         ref={bottomSheetRef}
         onChange={handleSheetChanges}
         enableDynamicSizing={true}
-      
-      
+
+
       >
-       
-          <BottomSheetView style={styles.contentContainer}>
-            {children}
-          </BottomSheetView>
-       
+
+        <BottomSheetView style={styles.contentContainer}>
+          {children}
+        </BottomSheetView>
+
       </BottomSheet>
-      
+
     </GestureHandlerRootView>
   );
 };
-
-
-
-export default App;

@@ -12,42 +12,45 @@ interface InputProps extends TextInputProps {
 
 }
 
-const Input = forwardRef<TextInput, InputProps> (
-  ({ 
-    placeholder, 
-    icon = false, 
-    search, 
-    secureTextEntry,  
-    ...rest 
+const Input = forwardRef<TextInput, InputProps>(
+  ({
+    placeholder,
+    icon = false,
+    search,
+    secureTextEntry,
+    ...rest
   }
     , ref) => {
-  const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
 
-  return (
-    <View style={styles.container}>
-      <TextInput
-        ref={ref}
-        placeholder={placeholder}
-        secureTextEntry={secureTextEntry ? !showPassword : false}
-        style={styles.input}
-        {...rest}
-      />
-      {
-        secureTextEntry && (
+    return (
+      <View style={styles.container}>
+        <TextInput
+          ref={ref}
+          placeholder={placeholder}
+          secureTextEntry={secureTextEntry ? !showPassword : false}
+          style={styles.input}
+          autoCapitalize='none'
+          autoComplete='off'
+          autoCorrect={false}
+          {...rest}
+        />
+        {
+          secureTextEntry && (
+            <TouchableOpacity onPress={() => setShowPassword(prev => !prev)} style={styles.iconButton}>
+              <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="black" />
+            </TouchableOpacity>
+          )
+        }
+        {search && (
           <TouchableOpacity onPress={() => setShowPassword(prev => !prev)} style={styles.iconButton}>
-            <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="black" />
+            {search && <MaterialIcons name='search' size={24} color={theme.colors.cardTextColor} />}
+
           </TouchableOpacity>
-        )
-      }
-      {search && (
-        <TouchableOpacity onPress={() => setShowPassword(prev => !prev)} style={styles.iconButton}>
-          {search && <MaterialIcons name='search' size={24} color={theme.colors.cardTextColor} />}
-         
-        </TouchableOpacity>
-      )}
-    </View>
-  );
-});
+        )}
+      </View>
+    );
+  });
 
 export default Input;

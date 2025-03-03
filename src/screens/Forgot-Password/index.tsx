@@ -31,9 +31,7 @@ type ForgotPasswordData = {
 const ForgotPasswordSchema = yup.object().shape({
   email: yup.string().email('Email invalido').required('Email e obrigatorio'),
 });
-
-
-export default function ForgotPasswordScreen() {
+export default function SignInScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [isTypeToast, setIsTypeToast] = useState<'success' | 'error'>('success');
   const [toastVisible, setToastVisible] = useState(false);
@@ -45,7 +43,7 @@ export default function ForgotPasswordScreen() {
       email: '',
     },
   });
-  const emailRef = useRef<TextInput>(null);
+
 
   const onSubmit = async (data: ForgotPasswordData) => {
     setIsLoading(true);
@@ -86,46 +84,49 @@ export default function ForgotPasswordScreen() {
 
   }
 
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const handleOpenModalForgotPassword = () => {
+    setModalSheetShow(true);
+  }
+  const PasswordRef = useRef<TextInput>(null);
+  const navigation = useNavigation();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ImageBackground source={require('../../assets/img/Image.png')} style={styles.container} resizeMode='cover'>
-        <View style={{ flex: 1 }}>
+        <View>
           <Header title='Recuperar conta' />
         </View>
-
-
-
         <KeyboardAvoidingView behavior='padding' style={styles.form}>
+
           <View style={styles.formContent}>
             <Text style={styles.formTitle}>Informe seu email para enviarmos o código de verificação.</Text>
             <View>
               <Controller
-
                 control={control}
-                rules={{ required: true }}
                 name='email'
+                rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <Input
-                    ref={emailRef}
                     placeholder='Email'
+                    secureTextEntry={false}
                     onChangeText={onChange}
                     onBlur={onBlur}
                     value={value}
-                    keyboardType='email-address'
-                    autoCapitalize='none'
-                    keyboardAppearance='dark'
-                    onSubmitEditing={handleSubmit(onSubmit)}
+                    onSubmitEditing={() => PasswordRef.current?.focus()}
+                    returnKeyType='next'
+
+
                   />
                 )}
               />
-              {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+              {errors.email && (
+                <Text style={styles.error}>Email e obrigatorio</Text>
+              )}
             </View>
           </View>
 
           <View style={styles.footer}>
-            <Button title='Enviar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
-            <Link title='Ainda nao tem conta ?' onPress={() => navigation.navigate('CreateAccounts' as never)} />
+            <Button title='Entrar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
+            <Link title='Ainda nao tem conta ?' onPress={handleOpenModalForgotPassword} />
           </View>
         </KeyboardAvoidingView>
 
@@ -137,8 +138,8 @@ export default function ForgotPasswordScreen() {
             onDismiss={() => setToastVisible(false)}
           />
         )}
-
       </ImageBackground>
+
     </TouchableWithoutFeedback>
   );
 }

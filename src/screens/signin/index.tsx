@@ -13,6 +13,7 @@ import apiServices from '../../services/api';
 import React, { useRef, useState } from 'react';
 import CustomToast from '../../components/CustomToast';
 import { useAuth } from '../../context/AuthContext';
+import { BottmSheetModal } from '../../components/SheetPrepare';
 
 type FormData = {
   email?: string;
@@ -25,6 +26,7 @@ const schema = yup.object().shape({
 }).required();
 
 export default function SignInScreen() {
+  const [modalSheetShow, setModalSheetShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -66,6 +68,10 @@ export default function SignInScreen() {
     setIsLoading(false);
 
   };
+
+  const handleOpenModalForgotPassword = () => {
+    setModalSheetShow(true);
+  }
   const PasswordRef = useRef<TextInput>(null);
   const navigation = useNavigation();
   return (
@@ -136,7 +142,7 @@ export default function SignInScreen() {
 
           <View style={styles.footer}>
             <Button title='Entrar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
-            <Link title='Ainda nao tem conta ?' onPress={() => navigation.navigate('CreateAccounts' as never)} />
+            <Link title='Ainda nao tem conta ?' onPress={handleOpenModalForgotPassword} />
           </View>
         </KeyboardAvoidingView>
 

@@ -118,9 +118,7 @@ export default function Header({ title, slogan }: HeaderProps) {
           <theme.IconBack />
         </TouchableOpacity>
 
-        <Text style={[styles.headerTitle, { color: theme?.color }]}>ola: {
-          user ? user.email : null
-        }</Text>
+        <Text style={[styles.headerTitle, { color: theme?.color }]}>{title}</Text>
       </View>
 
       {
