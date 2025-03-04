@@ -8,10 +8,8 @@ import CategoriesItem from '../../../components/CategoriesItem';
 import { recipes } from '../../../mocks/Recipes';
 
 import icons from '../../../assets/icon';
-import { useAuth } from '../../../context/AuthContext';
 
 export default function Home() {
-  const { isAuthenticated } = useAuth();
 
   const item = [{
     id: 1,

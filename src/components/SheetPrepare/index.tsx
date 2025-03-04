@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { GestureHandlerRootView, Switch } from 'react-native-gesture-handler';
+import React, { useCallback, useRef, } from 'react';
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import RadionButton from '../RadionButton';
-import { theme } from '../../global/theme';
+
 import { styles } from './styles';
 
 export const BottmSheetModal = ({ children }: { children: React.ReactNode }) => {

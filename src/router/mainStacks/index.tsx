@@ -1,17 +1,18 @@
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
-
 import IntroScreen from '../../screens/Intro';
 import SignInScreen from '../../screens/signin';
 import CreateAccountsScreen from '../../screens/CreateAccounts';
 import ForgotPasswordScreen from '../../screens/Forgot-Password';
-import HomeScreen from '../../screens/AuthScreens/Home';
+
 import ProductScreen from '../../screens/AuthScreens/Product';
 import CodeOtpScreen from '../../screens/Code-Otp';
-import ReceitaScreen from '../../screens/AuthScreens/ReceitaScreen';
-import PrepareScreen from '../../screens/AuthScreens/Prepare';
-import { useAuth } from '../../context/AuthContext';
+
 import ChangePasswordScreen from '../../screens/ChangePassword';
+import DrawerRoutes from '../drawerStack';
+
+import { useAuth } from '../../context/AuthContext';
+
 
 export enum ERoutes {
   Intro = 'Intro',
@@ -24,7 +25,9 @@ export enum ERoutes {
   ChangePassword = 'ChangePassword',
   Home = 'Home',
   Prepare = 'Prepare',
+  DrawerRoutes = 'DrawerRoutes',
 }
+
 export type RootStackParamList = {
   [ERoutes.Intro]: undefined;
   [ERoutes.SignIn]: undefined;
@@ -33,7 +36,7 @@ export type RootStackParamList = {
   [ERoutes.CodeOtp]: undefined;
   [ERoutes.Prepare]: undefined;
   [ERoutes.ChangePassword]: undefined;
-
+  [ERoutes.DrawerRoutes]: undefined;
 };
 
 const Stack = createNativeStackNavigator();
@@ -41,44 +44,29 @@ const Stack = createNativeStackNavigator();
 export function MainStacks() {
   const { isAuthenticated } = useAuth();
 
-
-
-
-  console.log(isAuthenticated())
-
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} >
+    <Stack.Navigator
+      id={undefined}
+      screenOptions={{ headerShown: false }}
+    >
       {/* Public Routes */}
-      {
-        !isAuthenticated() ? (
-          <>
-            <Stack.Screen name={ERoutes.Intro} component={IntroScreen} />
-            <Stack.Screen name={ERoutes.SignIn} component={SignInScreen} />
-            <Stack.Screen name={ERoutes.CreateAccounts} component={CreateAccountsScreen} />
-            <Stack.Screen name={ERoutes.ForgotPassword} component={ForgotPasswordScreen} />
-            <Stack.Screen name={ERoutes.CodeOtp} component={CodeOtpScreen} />
-            <Stack.Screen name={ERoutes.Product} component={ProductScreen} />
-            <Stack.Screen name={ERoutes.ChangePassword} component={ChangePasswordScreen} />
-          </>
-        ) : (
-          <>
-
-            <Stack.Screen name={ERoutes.Home} component={HomeScreen} />
-            <Stack.Screen name={ERoutes.Product} component={ProductScreen} />
-            <Stack.Screen name={ERoutes.ReceitaScreen} component={ReceitaScreen} />
-            <Stack.Screen name={ERoutes.Prepare} component={PrepareScreen} />
-
-          </>
-        )
-
-      }
-
-
-      {/* Private Routes */}
-
-
-
-
+      {!isAuthenticated() ? (
+        <>
+          <Stack.Screen name={ERoutes.Intro} component={IntroScreen} />
+          <Stack.Screen name={ERoutes.SignIn} component={SignInScreen} />
+          <Stack.Screen name={ERoutes.CreateAccounts} component={CreateAccountsScreen} />
+          <Stack.Screen name={ERoutes.ForgotPassword} component={ForgotPasswordScreen} />
+          <Stack.Screen name={ERoutes.CodeOtp} component={CodeOtpScreen} />
+          <Stack.Screen name={ERoutes.Product} component={ProductScreen} />
+          <Stack.Screen name={ERoutes.ChangePassword} component={ChangePasswordScreen} />
+        </>
+      ) : (
+        // Only have DrawerRoutes for authenticated state
+        <Stack.Screen
+          name={ERoutes.DrawerRoutes}
+          component={DrawerRoutes}
+        />
+      )}
     </Stack.Navigator>
   );
 }

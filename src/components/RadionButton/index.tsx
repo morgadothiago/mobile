@@ -21,11 +21,11 @@ export default function RadionButton({ item }: RadioButtonProps) {
   return (
     <View style={styles.radioContainer}>
       <TouchableOpacity onPress={handlePress} style={styles.radioButton}>
-       {
-        isSelected ? (
-          <View style={styles.radioInner} />
-        ) : null
-       }
+        {
+          isSelected ? (
+            <View style={styles.radioInner} />
+          ) : null
+        }
       </TouchableOpacity>
       <Text style={{ marginLeft: 8 }}>{item.name}</Text>
     </View>

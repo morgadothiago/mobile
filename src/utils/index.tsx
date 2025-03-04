@@ -6,6 +6,7 @@ export const NavigationRoot = (
   navigate: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState">,
   route: ERoutes,
   params?: Record<string, any>
+
 ) => {
 
   navigate.navigate(route, params);

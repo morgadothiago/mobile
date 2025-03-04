@@ -1,7 +1,7 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
-import { RootStackParamList } from '../../router/MainStacks';
+import { RootStackParamList } from '../../router/mainStacks';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 
@@ -19,14 +19,14 @@ export default function ListItem({ item }: ListItemProps) {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate('Product', { item } as any )}
+      onPress={() => navigation.navigate('Product', { item } as any)}
     >
       <View style={styles.contentImage}>
-        <Image 
-          style={styles.image} 
-          source={{ uri: item.image }} 
+        <Image
+          style={styles.image}
+          source={{ uri: item.image }}
         />
         <Text style={styles.title}>{item.name}</Text>
       </View>

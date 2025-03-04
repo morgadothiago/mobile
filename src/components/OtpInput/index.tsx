@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, TextInput, StyleSheet, StyleProp, ViewStyle, KeyboardAvoidingView, TouchableNativeFeedback, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput, StyleSheet, StyleProp, ViewStyle, } from 'react-native';
 
 type OtpInputProps = {
   onChangeText: (text: string) => void;

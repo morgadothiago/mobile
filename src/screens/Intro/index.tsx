@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ImageBackground } from 'react-native';
 import FundoImg from '../../assets/img/Image.png';
 import LogoImg from '../../assets/img/logo.png';
 

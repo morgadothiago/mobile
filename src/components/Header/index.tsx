@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons, AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './styles';
-import { useEffect, useState } from 'react';
 import { ERoutes } from '../../router/mainStacks';
 import { useAuth } from '../../context/AuthContext';
-
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 type HeaderProps = {
   title?: string;
   slogan?: string;
+  navigation?: string;
+};
 
-}
 type Theme = {
   color: string;
   IconBack: any;
@@ -20,24 +20,31 @@ type Theme = {
   iconAction?: any;
   slogan?: string;
   sloganColor?: string;
-}
+};
 
 enum EStatus {
   Auth
-
 }
 
-export default function Header({ title, slogan }: HeaderProps) {
+type DrawerParamList = {
+  Home: undefined;
+  Product: undefined;
+  Receita: undefined;
+  Prepare: undefined;
+};
+
+export default function Header({ title, slogan, }: HeaderProps) {
   const { logout, user } = useAuth();
   const [notification, setNotification] = useState(0);
-  const navigation = useNavigation();
   const route = useRoute();
+  const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
+
   const [theme, setTheme] = useState<Theme>({
     color: 'white',
     IconBack: () => <MaterialIcons name="arrow-back" size={24} color="black" />,
     size: 47,
-
   });
+
 
 
   useEffect(() => {
@@ -51,7 +58,6 @@ export default function Header({ title, slogan }: HeaderProps) {
           IconBack: () => <MaterialIcons name='arrow-back' size={theme?.size} color={theme?.color} />,
           size: 47
         })
-
         break;
       case ERoutes.ReceitaScreen:
         setTheme({
@@ -77,7 +83,6 @@ export default function Header({ title, slogan }: HeaderProps) {
           size: 47,
           slogan: route.name === ERoutes.Home ? 'KiSorvetes' : null,
           iconAction: () => <Image source={require('../../assets/img/business 1.png')} style={styles.iconAction} />
-
         })
         break;
       case ERoutes.Prepare:
@@ -101,38 +106,35 @@ export default function Header({ title, slogan }: HeaderProps) {
                   </View>
                 )
               }
-
             </View>
           )
         })
         break;
     }
-  }, [route.name])
+  }, [route.name]);
 
+  const openDrawer = () => {
+    navigation.openDrawer();
+  }
   return (
-
     <View style={styles.header}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
 
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={openDrawer}>  {/* Função de abrir o Drawer */}
           <theme.IconBack />
         </TouchableOpacity>
 
         <Text style={[styles.headerTitle, { color: theme?.color }]}>{title}</Text>
       </View>
 
-      {
-        theme?.iconAction && (
-          <TouchableOpacity onPress={() => logout()}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              {theme?.slogan && <Text style={{ color: '#ff0000', fontSize: 18, fontWeight: 'bold' }}>{theme.slogan}</Text>}
-              <theme.iconAction />
-            </View>
-
-          </TouchableOpacity>
-        )
-
-      }
+      {theme?.iconAction && (
+        <TouchableOpacity onPress={() => logout()}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            {theme?.slogan && <Text style={{ color: '#ff0000', fontSize: 18, fontWeight: 'bold' }}>{theme.slogan}</Text>}
+            <theme.iconAction />
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, ImageBackground, Keyboard, KeyboardAvoidingView, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { ImageBackground, Keyboard, KeyboardAvoidingView, Text, TouchableWithoutFeedback, View } from 'react-native';
 import styles from './styles';
 import Input from '../../components/Input';
 import { useNavigation } from '@react-navigation/native';
@@ -7,11 +7,12 @@ import Button from '../../components/Button';
 import Link from '../../components/Link';
 import Header from '../../components/Header';
 import { Controller, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+
 import apiServices from '../../services/api';
 import * as yup from 'yup';
 import CustomToast from '../../components/CustomToast';
 import { TextInput } from 'react-native-gesture-handler';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 type SignUpData = {
   email?: string;

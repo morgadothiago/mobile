@@ -1,7 +1,5 @@
 import 'react-native-gesture-handler';
 
-
-
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'react-native';
 import { Raleway_700Bold } from '@expo-google-fonts/raleway';
@@ -9,9 +7,14 @@ import { useFonts, Roboto_400Regular, Roboto_700Bold, Roboto_900Black, Roboto_50
 import { theme } from './src/global/theme';
 import { useEffect, useState } from 'react';
 import { SplashScreen } from './src/components/splashscreen';
-import Routes from './src/router';
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AuthProvider, { AuthContext } from './src/context/AuthContext';
+import { MainStacks } from './src/router/mainStacks';
+import Routes from './src/router';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
