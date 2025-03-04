@@ -6,6 +6,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.btnTextColorBlack,
     justifyContent: 'space-between',
     width: '100%',
+    height: 516,
+  },
+  header: {
+    padding: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    gap: 10,
   },
   form: {
     padding: 20,
@@ -14,18 +22,17 @@ const styles = StyleSheet.create({
     height: '70%',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-
-    justifyContent: 'center',
-    width: '100%',
-
+    justifyContent: 'space-between',
+    marginBottom: 40
   },
   formContent: {
-    gap: 10,
+    gap: 10
   },
   formTitle: {
-    color: theme.colors.btnTextColor,
-    fontSize: 24,
-    fontFamily: theme.fontsRoboto.Bold,
+    color: theme.colors.cardTextColor,
+    fontSize: 18,
+    fontFamily: theme.fontsRoboto.Regular,
+    marginBottom: 20,
   },
   headerTitle: {
     color: theme.colors.btnTextColor,
@@ -37,6 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: theme.fontsRaleway.Bold,
     textAlign: 'left',
+
   },
   footer: {
     flexDirection: 'column',
@@ -44,13 +52,18 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 79,
     borderRadius: 50,
-    marginBottom: 100,
+    marginBottom: 50,
     gap: 5,
+
+
   },
   error: {
     color: theme.colors.btnBackground,
-    fontSize: 12,
-    fontFamily: theme.fontsRoboto.Regular,
+
+    fontFamily: theme.fontsRoboto.Bold,
+  },
+  forgotPasswordArea: {
+    marginTop: 50,
   }
 });
 

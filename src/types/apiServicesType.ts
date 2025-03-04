@@ -5,6 +5,7 @@ import type { IUser } from "./User.type";
 
 export type IErrorResponse = {
   message: string;
+  details?: string;
   status: number;
 } | {
   message: {

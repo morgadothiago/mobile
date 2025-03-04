@@ -17,6 +17,7 @@ import apiServices from '../../services/api';
 
 import CustomToast from '../../components/CustomToast';
 import { ERoutes } from '../../router/mainStacks';
+import { NavigationRoot } from '../../utils';
 
 
 type RootStackParamList = {
@@ -76,17 +77,18 @@ export default function SignInScreen() {
 
     setTimeout(() => {
 
-      navigation.navigate(ERoutes.CodeOtp as never, { email: data.email });
+      navigation.navigate('CodeOtp', { email: data.email });
     }, 2000);
 
 
     setIsLoading(false);
 
   }
-
-  const handleOpenModalForgotPassword = () => {
-    setModalSheetShow(true);
+  const handleCreateAccounts = () => {
+    NavigationRoot(navigation, ERoutes.CreateAccounts as any);
   }
+
+
   const PasswordRef = useRef<TextInput>(null);
   const navigation = useNavigation();
   return (
@@ -126,7 +128,7 @@ export default function SignInScreen() {
 
           <View style={styles.footer}>
             <Button title='Entrar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
-            <Link title='Ainda nao tem conta ?' onPress={handleOpenModalForgotPassword} />
+            <Link title='Ainda nao tem conta ?' onPress={handleCreateAccounts} />
           </View>
         </KeyboardAvoidingView>
 

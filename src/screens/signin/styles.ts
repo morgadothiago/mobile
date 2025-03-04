@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   error: {
     color: theme.colors.btnBackground,
 
-    fontFamily: theme.fontsRoboto.Bold,
+    fontFamily: theme.fontsRoboto.Regular,
   },
   forgotPasswordArea: {
     marginTop: 50,

@@ -1,94 +1,158 @@
-import React, { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, ImageBackground, Keyboard, KeyboardAvoidingView, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { ImageBackground, Keyboard, KeyboardAvoidingView, Text, TouchableWithoutFeedback, View, TextInput } from 'react-native';
 import styles from './styles';
 import Input from '../../components/Input';
-import { useNavigation } from '@react-navigation/native';
 import Button from '../../components/Button';
-import Link from '../../components/Link';
 import Header from '../../components/Header';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
 import apiServices from '../../services/api';
-import * as yup from 'yup';
+import React, { useRef, useState } from 'react';
 import CustomToast from '../../components/CustomToast';
-import { TextInput } from 'react-native-gesture-handler';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationRoot } from '../../utils';
+import { ERoutes } from '../../router/mainStacks';
 
-type ChangePasswordProps = {
 
+type FormData = {
   password?: string;
   confirmPassword?: string;
+  recoveryToken?: string;
 }
 
-const SignUpSchema = yup.object().shape({
+type routeProps = {
+  recoveryToken: string;
+}
+
+const schema = yup.object().shape({
   password: yup.string().required('Senha e obrigatoria'),
   confirmPassword: yup.string().required('Confirmacao de senha e obrigatoria'),
-});
+}).required();
 
-export default function CreateAccountsScreen() {
-  const [isTypeToast, setIsTypeToast] = useState<'success' | 'error'>('success');
+export default function ChangePasswordScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const { control, handleSubmit, formState: { errors } } = useForm<ChangePasswordProps>({
-    resolver: yupResolver(SignUpSchema),
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [isTypeToast, setIsTypeToast] = useState<'success' | 'error'>('success');
+  const navigation = useNavigation();
+  const routes = useRoute();
+
+  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
+    resolver: yupResolver(schema),
     defaultValues: {
-      email: '',
       password: '',
       confirmPassword: '',
     },
   });
 
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const onSubmit = async (data: SignUpData) => {
+  const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
+    const { recoveryToken } = routes.params as routeProps;
 
 
 
-  }
+    if (data.password !== data.confirmPassword) {
+      setToastMessage('As senhas não conferem');
+      setToastVisible(true);
+      setIsTypeToast('error');
+      setIsLoading(false);
+      return;
+    }
+    console.log('aqui', props)
 
-  const navigation = useNavigation();
+    const updatePassword = await apiServices.updatePassword(data.password, recoveryToken);
+
+    if ('status' in updatePassword) {
+      if (updatePassword.status === 403) {
+        setToastMessage(updatePassword.details.toString());
+        setToastVisible(true);
+        setIsTypeToast('error');
+        setIsLoading(false);
+        return;
+      }
+
+
+    }
+
+    setToastMessage('Senha alterada com sucesso');
+    setToastVisible(true);
+    setIsTypeToast('success');
+    setTimeout(() => {
+      NavigationRoot(navigation, ERoutes.SignIn);
+    }, 2000);
+
+
+
+    setIsLoading(false);
+
+  };
+  const PasswordRef = useRef<TextInput>(null);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ImageBackground source={require('../../assets/img/Image.png')} style={styles.container} resizeMode='cover'>
         <View>
-          <Header title='Criar conta' />
+          <Header title='Mudar Senha' />
         </View>
-
         <KeyboardAvoidingView behavior='padding' style={styles.form}>
-          <Text>
-            Informe sua nova senha ?
-          </Text>
 
-          <View>
-            <Input placeholder="Digite a senha" />
-            {
-              errors.password && (
-                <Text>
-                  {errors.password.message}
-                </Text>
-              )
-            }
+          <View style={styles.formContent}>
+            <View style={{
+              marginTop: 10,
+            }}>
+              <Controller
+                control={control}
+                name='password'
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    ref={PasswordRef}
+                    placeholder='Senha'
+                    icon onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    secureTextEntry={true}
+                    onSubmitEditing={handleSubmit(onSubmit)}
+                    returnKeyType='done'
+                  />
+                )}
+              />
+              {errors.password && (
+                <Text style={styles.error}>Senha e obrigatoria</Text>
+              )}
+            </View>
+
+            <View>
+              <Controller
+                control={control}
+                name='confirmPassword'
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Input
+                    ref={PasswordRef}
+                    placeholder='confirmar senha'
+                    icon onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    secureTextEntry={true}
+                    onSubmitEditing={handleSubmit(onSubmit)}
+                    returnKeyType='done'
+                  />
+                )}
+              />
+              {errors.confirmPassword && (
+                <Text style={styles.error}>campos obrigatorio</Text>
+              )}
+            </View>
+
+
           </View>
 
-          <View>
-            <Input placeholder="confirme a senha" />
-            {
-              errors.confirmPassword && (
-                <Text>
-                  {errors.confirmPassword.message}
-                </Text>
-              )
-            }
-          </View>
-          <View style={{
-            flexDirection: 'row',
-            flex: 1,
-            justifyContent: 'center',
-            marginBottom: 20,
-          }}>
-            <Button title='Criar Conta' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
+          <View style={styles.footer}>
+            <Button title='Entrar' onPress={handleSubmit(onSubmit)} isLoading={isLoading} />
           </View>
         </KeyboardAvoidingView>
-
-
 
         {toastVisible && (
           <CustomToast
@@ -98,9 +162,8 @@ export default function CreateAccountsScreen() {
             onDismiss={() => setToastVisible(false)}
           />
         )}
-
-
       </ImageBackground>
+
     </TouchableWithoutFeedback>
   );
 }

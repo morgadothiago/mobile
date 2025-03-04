@@ -74,10 +74,10 @@ export default function SignInScreen() {
 
       NavigationRoot(navigation, ERoutes.ChangePassword, {
         recoveryToken: verifyRecoveryCode.recoveryToken
-      })
+      });
     }, 2000);
 
-
+    console.log(verifyRecoveryCode)
   }
   const startTimer = () => {
     const interval = setInterval(() => {
@@ -137,7 +137,7 @@ export default function SignInScreen() {
 
             <View style={{
 
-              width: '46%',
+              width: '100%',
             }}>
               {
                 !isTimeOut ? <Text>Aguarde {time} segundos</Text> : <Link title='Reenviar código' onPress={sendNewCode} />

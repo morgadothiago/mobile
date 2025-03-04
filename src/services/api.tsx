@@ -2,6 +2,7 @@ import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from '
 import type { IErrorResponse, ILoginResponse } from '../types/apiServicesType';
 import type { IRecoveryCode } from '../types/recovery.type';
 import type { IVerifyRecoveryCodeResponse } from '../types/verifyRecoveryCode.type';
+import type { IUpdatePassword } from '../types/updatePassword.type';
 
 
 
@@ -40,6 +41,19 @@ class apiServices {
       .then(this.getResponse<IVerifyRecoveryCodeResponse>)
       .catch(this.getError);
   }
+  async updatePassword(password: string, recoveryToken: string): Promise<IUpdatePassword | IErrorResponse> {
+    console.log(password, recoveryToken)
+
+
+    return this.api.patch('/auth/change-password', { password }, {
+      // Passando paramentros no header da requisição
+      headers: {
+        codigo: recoveryToken
+      }
+    })
+      .then(this.getResponse<IUpdatePassword>)
+      .catch(this.getError);
+  } s
 
 
 
@@ -56,6 +70,13 @@ class apiServices {
         status: error.status,
       };
 
+    }
+    if (error.status === 403) {
+      return {
+        message: error.response?.data?.message,
+        details: error.response?.data?.details,
+        status: error.status,
+      };
     }
     if ([404, 409, 401].includes(error.status)) {
 
