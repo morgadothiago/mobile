@@ -58,7 +58,6 @@ export default function CreateAccountsScreen() {
     if (SignUp) {
       setIsTypeToast('error');
       if ([404, 409].includes(SignUp.status)) {
-        console.log(SignUp.message as string);
         setToastMessage(SignUp.message as string);
         setIsLoading(false);
       } else if (SignUp.status === 500) {

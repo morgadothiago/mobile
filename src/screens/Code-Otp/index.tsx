@@ -51,8 +51,6 @@ export default function SignInScreen() {
     const verifyRecoveryCode = await apiServices.verifyRecoveryCode(data.code, email);
     setIsLoading(false);
 
-    console.log(verifyRecoveryCode);
-
     if ('status' in verifyRecoveryCode) {
       if (verifyRecoveryCode.status === 422) {
         // Utilizar Object.entries
@@ -76,8 +74,6 @@ export default function SignInScreen() {
         recoveryToken: verifyRecoveryCode.recoveryToken
       });
     }, 2000);
-
-    console.log(verifyRecoveryCode)
   }
   const startTimer = () => {
     const interval = setInterval(() => {

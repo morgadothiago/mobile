@@ -60,7 +60,6 @@ export default function ChangePasswordScreen(props) {
       setIsLoading(false);
       return;
     }
-    console.log('aqui', props)
 
     const updatePassword = await apiServices.updatePassword(data.password, recoveryToken);
 
@@ -82,8 +81,6 @@ export default function ChangePasswordScreen(props) {
     setTimeout(() => {
       NavigationRoot(navigation, ERoutes.SignIn);
     }, 2000);
-
-
 
     setIsLoading(false);
 

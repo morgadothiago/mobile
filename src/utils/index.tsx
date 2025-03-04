@@ -8,8 +8,6 @@ export const NavigationRoot = (
   params?: Record<string, any>
 ) => {
 
-  console.log(route, params);
-
   navigate.navigate(route, params);
 
 }

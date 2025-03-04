@@ -15,7 +15,6 @@ class apiServices {
     this.api = axios.create({
       baseURL: 'http://192.168.100.73:4000',
     })
-    console.log('apiServices constructor')
   }
 
   async login(email: string, password: string): Promise<ILoginResponse | IErrorResponse> {
@@ -42,9 +41,6 @@ class apiServices {
       .catch(this.getError);
   }
   async updatePassword(password: string, recoveryToken: string): Promise<IUpdatePassword | IErrorResponse> {
-    console.log(password, recoveryToken)
-
-
     return this.api.patch('/auth/change-password', { password }, {
       // Passando paramentros no header da requisição
       headers: {
@@ -62,7 +58,6 @@ class apiServices {
   }
 
   private async getError(error: AxiosError<any>): Promise<IErrorResponse> {
-    console.log(error)
     if (error.status === 422) {
 
       return {

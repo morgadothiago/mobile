@@ -10,7 +10,6 @@ export const BottmSheetModal = ({ children }: { children: React.ReactNode }) => 
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
   }, []);
 
   return (
