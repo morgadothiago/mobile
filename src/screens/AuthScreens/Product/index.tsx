@@ -7,27 +7,50 @@ import Button from '../../../components/Button';
 import styles from './styles';
 import { theme } from '../../../global/theme';
 import { useAuth } from '../../../context/AuthContext';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 
-// Since RootStackParamList is not exported, we will define a type for the route params directly
+// Update the type definition
 type ProductRouteParams = {
-  item: {
-    name: string;
-    description: string;
-    image: string;
-    favorite: boolean;
+  Product: {
+    item: {
+      name: string;
+      description: string;
+      image: string;
+      favorite: boolean;
+    };
   };
 };
 
 type ProductScreenProps = {
   route: RouteProp<ProductRouteParams, 'Product'>;
 };
+
+type RootStackParamList = {
+  Prepare: {
+    item: {
+      name: string;
+      description: string;
+      image: string;
+      favorite: boolean;
+    };
+  };
+};
+
 export default function ProductScreen({ route }: ProductScreenProps) {
-  const { item } = route.params as ProductRouteParams;
+  const item = route.params?.item;
+
+  // Add null check
+  if (!item) {
+    return null; // or some loading/error state
+  }
+
   const { name, description, image } = item;
   const [favorite, setFavorite] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { setData, user } = useAuth();
+
+  console.log(item);
 
   function handleFavorite() {
     setFavorite(prevFavorite => !prevFavorite);

@@ -49,10 +49,6 @@ export default function ChangePasswordScreen(props) {
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    const { recoveryToken } = routes.params as routeProps;
-
-
-
     if (data.password !== data.confirmPassword) {
       setToastMessage('As senhas não conferem');
       setToastVisible(true);
@@ -61,20 +57,14 @@ export default function ChangePasswordScreen(props) {
       return;
     }
 
+
+    const { recoveryToken } = routes.params as routeProps;
     const updatePassword = await apiServices.updatePassword(data.password, recoveryToken);
 
-    if ('status' in updatePassword) {
-      if (updatePassword.status === 403) {
-        setToastMessage(updatePassword.details.toString());
-        setToastVisible(true);
-        setIsTypeToast('error');
-        setIsLoading(false);
-        return;
-      }
 
-
-    }
-
+    console.log('Aqui:  ', updatePassword)
+    console.log('Aquired recovery token')
+    console.log('Esta aqui')
     setToastMessage('Senha alterada com sucesso');
     setToastVisible(true);
     setIsTypeToast('success');
@@ -82,9 +72,9 @@ export default function ChangePasswordScreen(props) {
       NavigationRoot(navigation, ERoutes.SignIn);
     }, 2000);
 
-    setIsLoading(false);
-
   };
+
+
   const PasswordRef = useRef<TextInput>(null);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

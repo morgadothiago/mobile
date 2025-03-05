@@ -4,12 +4,19 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    paddingTop: 40
+
   },
   header: {
-    padding: 20,
+
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5'
+    borderBottomColor: '#E5E5E5',
+
+  },
+  headerWarpper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
   },
   title: {
     fontSize: 24,

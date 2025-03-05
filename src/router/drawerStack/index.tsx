@@ -5,6 +5,22 @@ import ProductScreen from '../../screens/AuthScreens/Product';
 import ReceitaScreen from '../../screens/AuthScreens/ReceitaScreen';
 import PrepareScreen from '../../screens/AuthScreens/Prepare';
 import { DrawerMenu } from '../../components/DrawerMenu';
+import ProfileScreen from '../../screens/AuthScreens/Profile';
+
+
+
+
+export enum DrawerERoutes {
+  DrawerRoutes = 'DrawerRoutes',
+  Perfil = "PerfilScreen",
+}
+
+export type RootStackParamList = {
+  [DrawerERoutes.Perfil]: undefined;
+  [DrawerERoutes.DrawerRoutes]: undefined;
+};
+
+
 
 const Drawer = createDrawerNavigator();
 
@@ -22,9 +38,8 @@ export default function DrawerRoutes() {
       drawerContent={(props) => <DrawerMenu {...props} />}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Product" component={ProductScreen} />
-      <Drawer.Screen name="Receita" component={ReceitaScreen} />
-      <Drawer.Screen name="Prepare" component={PrepareScreen} />
+      <Drawer.Screen name={DrawerERoutes.Perfil} component={ProfileScreen} />
+
     </Drawer.Navigator>
   );
 } 

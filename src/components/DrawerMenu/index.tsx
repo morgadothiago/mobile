@@ -1,12 +1,23 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
-import { MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
 import styles from './styles';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerERoutes } from '../../router/drawerStack';
+import Avatar from '../Avatar';
+
+
+import EmprtAvatar from '../../assets/img/icons/user.png'
+
 
 export function DrawerMenu(props: DrawerContentComponentProps) {
   const { logout, user } = useAuth();
+  const navigation = useNavigation();
+
+  console.log(props.state.routeNames)
+
 
   const menuItems = [
     {
@@ -15,19 +26,24 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
       route: 'Home'
     },
     {
-      name: 'Produtos',
+      name: DrawerERoutes.Perfil,
+      icon: 'person',
+      route: DrawerERoutes.Perfil
+    },
+    {
+      name: 'Meus negocios',
       icon: 'inventory',
-      route: 'Product'
+      route: 'Meusnegocios'
+    },
+    {
+      name: 'Empreendimentos',
+      icon: 'receipt-long',
+      route: 'PrepareScreen'
     },
     {
       name: 'Receitas',
-      icon: 'receipt-long',
-      route: 'Receita'
-    },
-    {
-      name: 'Preparar',
       icon: 'blender',
-      route: 'Prepare'
+      route: 'ReceitasScreen'
     }
   ];
 
@@ -35,7 +51,15 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
     <View style={styles.container}>
       {/* Header menu  */}
       <View style={styles.header}>
-        <Text style={styles.title}>KiSorvetes</Text>
+        <View style={styles.headerWarpper}>
+          <Text>Nome do usuario</Text>
+          <View>
+            {
+              user.avatar ? <Avatar /> : <EvilIcons name='user' size={69} />
+            }
+          </View>
+
+        </View>
       </View>
 
       <View style={styles.menuItems}>

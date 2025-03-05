@@ -4,6 +4,7 @@ import { MaterialIcons, AntDesign, Feather, Ionicons } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from './styles';
 import { ERoutes } from '../../router/mainStacks';
+import { DrawerERoutes } from '../../router/drawerStack';
 import { useAuth } from '../../context/AuthContext';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 
@@ -31,9 +32,10 @@ type DrawerParamList = {
   Product: undefined;
   Receita: undefined;
   Prepare: undefined;
+  Profile: undefined;
 };
 
-export default function Header({ title, slogan, }: HeaderProps) {
+export default function Header({ title, }: HeaderProps) {
   const { logout, user } = useAuth();
   const [notification, setNotification] = useState(0);
   const route = useRoute();
@@ -110,6 +112,13 @@ export default function Header({ title, slogan, }: HeaderProps) {
           )
         })
         break;
+      case DrawerERoutes.Perfil:
+        setTheme({
+          color: '#66324B',
+          IconBack: () => <MaterialIcons name='menu' size={33} color='#66324B' />,
+          size: 47,
+        })
+        break;
     }
   }, [route.name]);
 
@@ -120,9 +129,15 @@ export default function Header({ title, slogan, }: HeaderProps) {
     <View style={styles.header}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
 
-        <TouchableOpacity onPress={openDrawer}>  {/* Função de abrir o Drawer */}
-          <theme.IconBack />
-        </TouchableOpacity>
+        {
+          !route.params ? (
+            <TouchableOpacity onPress={openDrawer}>
+              {theme?.IconBack()}
+            </TouchableOpacity>
+          ) : <TouchableOpacity onPress={() => navigation.goBack()}>
+            <MaterialIcons name='arrow-back' size={theme?.size} color={theme?.color} />
+          </TouchableOpacity>
+        }
 
         <Text style={[styles.headerTitle, { color: theme?.color }]}>{title}</Text>
       </View>

@@ -12,6 +12,7 @@ import ChangePasswordScreen from '../../screens/ChangePassword';
 import DrawerRoutes from '../drawerStack';
 
 import { useAuth } from '../../context/AuthContext';
+import PrepareScreen from '../../screens/AuthScreens/Prepare';
 
 
 export enum ERoutes {
@@ -62,10 +63,15 @@ export function MainStacks() {
         </>
       ) : (
         // Only have DrawerRoutes for authenticated state
-        <Stack.Screen
-          name={ERoutes.DrawerRoutes}
-          component={DrawerRoutes}
-        />
+        <>
+          <Stack.Screen
+            name={ERoutes.DrawerRoutes}
+            component={DrawerRoutes}
+          />
+          <Stack.Screen name={ERoutes.Product} component={ProductScreen} />
+          <Stack.Screen name={ERoutes.Prepare} component={PrepareScreen} />
+
+        </>
       )}
     </Stack.Navigator>
   );
