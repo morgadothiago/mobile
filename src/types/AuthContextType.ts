@@ -1,8 +1,8 @@
 import type { IUser } from "./User.type";
 
-export interface AuthContextType {
+export type AuthContextType = {
   isAuthenticated: () => boolean;
-  logout: () => void;
+  logout: () => Promise<void>;
   setData: (accessToken: string, user: IUser, refressToken: string) => Promise<void>;
   user: IUser;
-}
+};

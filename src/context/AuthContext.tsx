@@ -17,6 +17,7 @@ interface AuthProviderProps {
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [accessToken, setAccessToken] = useState('');
   const [user, setUser] = useState<IUser>(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
   // Logicia de guardar o access token e o user no contexto
   useEffect(() => {
@@ -26,6 +27,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (accessToken && user) {
         setAccessToken(accessToken);
         setUser(JSON.parse(user));
+        setAuthenticated(true);
       }
     }
     loadStorageData();
@@ -33,18 +35,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const setData = async (accessToken: string, user: IUser, refressToken: string) => {
     setAccessToken(accessToken);
-
     setUser(user);
-
-
+    setAuthenticated(true);
     await storageService.setItem('access_token', accessToken);
     await storageService.setItem('refress_token', refressToken);
-    await storageService.setItem('user', JSON.stringify(user))
-
+    await storageService.setItem('user', JSON.stringify(user));
   }
-  const logout = async (accessToken: string, user: IUser, refressToken: string) => {
+
+  const logout = async () => {
     setAccessToken('');
     setUser(null);
+    setAuthenticated(false);
     await storageService.removeItem('access_token');
     await storageService.removeItem('refress_token');
     await storageService.removeItem('user');
@@ -52,8 +53,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const isAuthenticated = () => {
-
-    return !!accessToken;
+    return authenticated;
   }
 
 

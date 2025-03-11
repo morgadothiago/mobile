@@ -1,12 +1,9 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import HomeScreen from '../../screens/AuthScreens/Home';
-import ProductScreen from '../../screens/AuthScreens/Product';
-import ReceitaScreen from '../../screens/AuthScreens/ReceitaScreen';
-import PrepareScreen from '../../screens/AuthScreens/Prepare';
+
 import { DrawerMenu } from '../../components/DrawerMenu';
 import ProfileScreen from '../../screens/AuthScreens/Profile';
-
+import { MainStacks } from '../mainStacks';
 
 
 
@@ -37,7 +34,7 @@ export default function DrawerRoutes() {
       }}
       drawerContent={(props) => <DrawerMenu {...props} />}
     >
-      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="HomeDrawer" component={MainStacks} />
       <Drawer.Screen name={DrawerERoutes.Perfil} component={ProfileScreen} />
 
     </Drawer.Navigator>

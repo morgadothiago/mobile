@@ -4,15 +4,19 @@ import IntroScreen from '../../screens/Intro';
 import SignInScreen from '../../screens/signin';
 import CreateAccountsScreen from '../../screens/CreateAccounts';
 import ForgotPasswordScreen from '../../screens/Forgot-Password';
-
-import ProductScreen from '../../screens/AuthScreens/Product';
 import CodeOtpScreen from '../../screens/Code-Otp';
-
 import ChangePasswordScreen from '../../screens/ChangePassword';
-import DrawerRoutes from '../drawerStack';
 
+
+// Importação das Telas e rotas que sao auth
 import { useAuth } from '../../context/AuthContext';
+import DrawerRoutes from '../drawerStack';
 import PrepareScreen from '../../screens/AuthScreens/Prepare';
+import ProductScreen from '../../screens/AuthScreens/Product';
+import HomeScreen from '../../screens/AuthScreens/Home';
+import AllRecipes from '../../screens/AuthScreens/AllRecipes';
+import DrawerExample from '../drawerStack';
+import Home from '../../screens/AuthScreens/Home';
 
 
 export enum ERoutes {
@@ -26,6 +30,8 @@ export enum ERoutes {
   ChangePassword = 'ChangePassword',
   Home = 'Home',
   Prepare = 'Prepare',
+  AllRecipes = 'AllRecipes',
+
   DrawerRoutes = 'DrawerRoutes',
 }
 
@@ -38,6 +44,7 @@ export type RootStackParamList = {
   [ERoutes.Prepare]: undefined;
   [ERoutes.ChangePassword]: undefined;
   [ERoutes.DrawerRoutes]: undefined;
+  [ERoutes.AllRecipes]: undefined;
 };
 
 const Stack = createNativeStackNavigator();
@@ -64,11 +71,9 @@ export function MainStacks() {
       ) : (
         // Only have DrawerRoutes for authenticated state
         <>
-          <Stack.Screen
-            name={ERoutes.DrawerRoutes}
-            component={DrawerRoutes}
-          />
+          <Stack.Screen name={ERoutes.Home} component={HomeScreen} />
           <Stack.Screen name={ERoutes.Product} component={ProductScreen} />
+          <Stack.Screen name={ERoutes.AllRecipes} component={AllRecipes} />
           <Stack.Screen name={ERoutes.Prepare} component={PrepareScreen} />
 
         </>

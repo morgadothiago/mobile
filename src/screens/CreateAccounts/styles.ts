@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
 
   },
   form: {
-
-    gap: 6,
+    paddingHorizontal: 20,
+    gap: 10,
     backgroundColor: theme.colors.primary,
     height: '70%',
     borderTopLeftRadius: 20,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   formContent: {
-    gap: 10,
+    gap: 15,
   },
   formTitle: {
     color: theme.colors.btnTextColor,

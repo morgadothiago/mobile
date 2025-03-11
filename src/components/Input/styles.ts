@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     width: '100%',
+    color: theme.colors.cardTextColor,
   }
 });
 

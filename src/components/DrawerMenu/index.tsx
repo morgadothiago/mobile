@@ -13,11 +13,8 @@ import EmprtAvatar from '../../assets/img/icons/user.png'
 
 
 export function DrawerMenu(props: DrawerContentComponentProps) {
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
   const navigation = useNavigation();
-
-  console.log(props.state.routeNames)
-
 
   const menuItems = [
     {
@@ -26,14 +23,14 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
       route: 'Home'
     },
     {
-      name: DrawerERoutes.Perfil,
+      name: 'Perfil',
       icon: 'person',
-      route: DrawerERoutes.Perfil
+      route: 'PerfilScreen'
     },
     {
       name: 'Meus negocios',
       icon: 'inventory',
-      route: 'Meusnegocios'
+      route: 'Product'
     },
     {
       name: 'Empreendimentos',
@@ -47,6 +44,11 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
     }
   ];
 
+  const handleLogout = async () => {
+    await logout();
+    props.navigation.navigate('SignIn');
+  };
+
   return (
     <View style={styles.container}>
       {/* Header menu  */}
@@ -54,9 +56,7 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
         <View style={styles.headerWarpper}>
           <Text>Nome do usuario</Text>
           <View>
-            {
-              user.avatar ? <Avatar /> : <EvilIcons name='user' size={69} />
-            }
+            <Text>Ola</Text>
           </View>
 
         </View>
@@ -75,7 +75,7 @@ export function DrawerMenu(props: DrawerContentComponentProps) {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <MaterialIcons name="logout" size={24} color="#FF0000" />
         <Text style={styles.logoutText}>Sair</Text>
       </TouchableOpacity>

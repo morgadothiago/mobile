@@ -13,6 +13,7 @@ import AuthProvider, { AuthContext } from './src/context/AuthContext';
 import { MainStacks } from './src/router/mainStacks';
 import Routes from './src/router';
 import { LogBox } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 
 LogBox.ignoreLogs(['Text strings must be rendered within a <Text> component']);
 
@@ -48,8 +49,9 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AuthProvider>
         <View style={{ flex: 1, backgroundColor: theme.colors.primary }}>
-
-          <Routes />
+          <PaperProvider>
+            <Routes />
+          </PaperProvider>
           <StatusBar hidden />
         </View>
       </AuthProvider>

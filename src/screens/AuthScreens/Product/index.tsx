@@ -50,7 +50,7 @@ export default function ProductScreen({ route }: ProductScreenProps) {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { setData, user } = useAuth();
 
-  console.log(item);
+
 
   function handleFavorite() {
     setFavorite(prevFavorite => !prevFavorite);

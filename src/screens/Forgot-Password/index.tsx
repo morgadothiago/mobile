@@ -17,12 +17,13 @@ import apiServices from '../../services/api';
 
 import CustomToast from '../../components/CustomToast';
 import { ERoutes } from '../../router/mainStacks';
-import { NavigationRoot } from '../../utils';
 
 
 type RootStackParamList = {
-  CodeOtp: { email: string };
+  SignIn: undefined;
   CreateAccounts: undefined;
+  ForgotPassword: undefined;
+  CodeOtp: { email: string };
 };
 
 type ForgotPasswordData = {
@@ -50,7 +51,7 @@ export default function SignInScreen() {
     setIsLoading(true);
     const recoveryPassword = await apiServices.sendEmailRecovery(data.email);
 
-    console.log(recoveryPassword);
+
 
     if ('status' in recoveryPassword) {
       if (recoveryPassword.status === 404) {
@@ -76,7 +77,6 @@ export default function SignInScreen() {
 
 
     setTimeout(() => {
-
       navigation.navigate('CodeOtp', { email: data.email });
     }, 2000);
 
@@ -84,13 +84,13 @@ export default function SignInScreen() {
     setIsLoading(false);
 
   }
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handleCreateAccounts = () => {
-    NavigationRoot(navigation, ERoutes.CreateAccounts as any);
+    navigation.navigate('CreateAccounts');
   }
 
 
   const PasswordRef = useRef<TextInput>(null);
-  const navigation = useNavigation();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ImageBackground source={require('../../assets/img/Image.png')} style={styles.container} resizeMode='cover'>

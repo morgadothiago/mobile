@@ -62,9 +62,6 @@ export default function ChangePasswordScreen(props) {
     const updatePassword = await apiServices.updatePassword(data.password, recoveryToken);
 
 
-    console.log('Aqui:  ', updatePassword)
-    console.log('Aquired recovery token')
-    console.log('Esta aqui')
     setToastMessage('Senha alterada com sucesso');
     setToastVisible(true);
     setIsTypeToast('success');
