@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View, } from 'react-native';
+import { Alert, Image, KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View, } from 'react-native';
 
 import { styles } from './styles';
 import Header from '../../../components/Header';
@@ -8,7 +8,9 @@ import { theme } from '../../../global/theme';
 import { BottmSheetModal } from '../../../components/SheetPrepare';
 import Button from '../../../components/Button';
 import RecipeStep from '../../../components/RecipeStep';
-
+import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerParamList } from '../../../types/navigation';
 
 interface ListItemProps {
   item: {
@@ -29,9 +31,10 @@ export default function PrepareScreen({ route }: PrepareScreenProps) {
   const [isSheetVisible, setSheetVisible] = useState(false);
   const [isSheetEtapas, setSheetEtapas] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>('Por ingrediente');
+  const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
 
-  const { item } = route.params;
-  const { name, image, quantity } = item;
+  const item = route.params?.item;
+  const { name, image, quantity } = item || {};
   const options = ['Por ingrediente', 'Porção', 'Total'];
   const Etapas = [{
     etapa1: {
@@ -61,9 +64,19 @@ export default function PrepareScreen({ route }: PrepareScreenProps) {
     setSelectedOption(option);
   }
 
+  function handleRefresh() {
+    Alert.alert('Atualizando a lista de ingredientes');
+  }
+
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.primary }}>
-      <Header title='Preparar receita' />
+    <View style={styles.container}>
+      <Header
+        title='Preparar receita'
+        icon='arrow-left'
+        onPress={() => navigation.navigate('Home' as never)}
+        refresh={true}
+        onRefreshPress={handleRefresh}
+      />
       <View style={styles.headerContainer}>
         <Image source={{ uri: image }} style={styles.image} />
         <View style={styles.titleContainer}>
@@ -94,7 +107,7 @@ export default function PrepareScreen({ route }: PrepareScreenProps) {
 
 
       {isSheetVisible && (
-        <BottmSheetModal>
+        <BottmSheetModal onPress={() => { }} snapPoints={['50%']}>
           <View style={styles.sheetInputsArea}>
             <Text style={styles.sheetInputsAreaText}>Informe a quantidade que deseja preparar da receita.</Text>
             <View style={styles.sheetInputContainer}>

@@ -1,4 +1,4 @@
-import { DrawerLayoutAndroid, DrawerLayoutAndroidBase, FlatList, ScrollView, View } from 'react-native';
+import { FlatList, ScrollView, View } from 'react-native';
 import { styles } from './styles';
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -10,11 +10,19 @@ import { recipes } from '../../../mocks/Recipes';
 import icons from '../../../assets/icon';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerParamList } from '../../../types/navigation';
+import { DrawerParamList, type RootStackParamList } from '../../../types/navigation';
 import { theme } from '../../../global/theme';
+import { ERoutes } from '../../../router/mainStacks';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = CompositeNavigationProp<
+  DrawerNavigationProp<DrawerParamList>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 
 export default function Home() {
-  const navigation = useNavigation<DrawerNavigationProp<DrawerParamList>>();
+  const navigation = useNavigation<NavigationProp>();
 
   const item = [{
     id: 1,
@@ -62,7 +70,7 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header icon='menu' onPress={() => navigation.openDrawer()} business='slogan' />
       <View style={styles.searchArea}>
         <View style={styles.searchAreaInput}>
           <Input placeholder='Pesquisar receita...' secureTextEntry={false} style={{ flex: 1, color: theme.colors.cardTextColor }} search />
@@ -78,7 +86,7 @@ export default function Home() {
           <HeaderLIst
             title='Em alta'
             link='Ver todas'
-            onPress={() => navigation.navigate('AllRecipes')}
+            onPress={() => navigation.navigate(ERoutes.AllRecipes)}
           />
 
           <FlatList

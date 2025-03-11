@@ -12,11 +12,11 @@ import CodeOtpScreen from '../screens/Code-Otp';
 import HomeScreen from '../screens/AuthScreens/Home';
 import ProductScreen from '../screens/AuthScreens/Product';
 import ProfileScreen from '../screens/AuthScreens/Profile';
-import { DrawerMenu } from '../components/DrawerMenu';
-import { useAuth } from '../context/AuthContext';
-import ReceitaScreen from '../screens/AuthScreens/Receita';
 import PrepareScreen from '../screens/AuthScreens/Prepare';
 import AllRecipesScreen from '../screens/AuthScreens/AllRecipes';
+import NewAddRecipiesScreen from '../screens/AuthScreens/NewAddRecipies';
+import { DrawerMenu } from '../components/DrawerMenu';
+import { useAuth } from '../context/AuthContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -32,7 +32,6 @@ function DrawerRoutes() {
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="PerfilScreen" component={ProfileScreen} />
       <Drawer.Screen name="Product" component={ProductScreen} />
-      <Drawer.Screen name="ReceitasScreen" component={ReceitaScreen} />
       <Drawer.Screen name="PrepareScreen" component={PrepareScreen} />
       <Drawer.Screen name="AllRecipes" component={AllRecipesScreen} />
     </Drawer.Navigator>
@@ -57,6 +56,7 @@ function AppRoutes() {
           // App Stack
           <>
             <Stack.Screen name="DrawerRoutes" component={DrawerRoutes} />
+            <Stack.Screen name="NewAddRecipiesScreen" component={NewAddRecipiesScreen} />
           </>
         )}
       </Stack.Navigator>

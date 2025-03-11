@@ -1,4 +1,4 @@
-import { Alert, FlatList, Image, Text, View, Modal, Pressable, ScrollView } from 'react-native';
+import { FlatList, Image, Text, View, Pressable, ScrollView } from 'react-native';
 import { styles } from './styles';
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -8,20 +8,28 @@ import FilterButton from '../../../components/FilterButton';
 import ListItem from '../../../components/LIstitem';
 import { useState, useCallback } from 'react';
 import { BottmSheetModal } from '../../../components/SheetPrepare';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { theme } from '../../../global/theme';
 import { recipes } from '../../../mocks/Recipes';
 import ButtonRadio from '../../../components/CheckBox';
 import SwitchComponent from '../../../components/Switch';
 import Button from '../../../components/Button';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../types/navigation';
+import { useAuth } from '../../../context/AuthContext';
 
 
+import RefressIcon from '../../../assets/img/icons/refresh.png'
 
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export default function AllRecipes() {
+  const { user } = useAuth();
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [filteredRecipes, setFilteredRecipes] = useState(recipes);
-
+  const [search, setSearch] = useState('');
   const [filters, setFilters] = useState({
     orderBy: {
       relevance: false,
@@ -33,7 +41,8 @@ export default function AllRecipes() {
       MinhasReceitas: false,
       DoAplicativo: false
     },
-    favoritesOnly: false
+    favoritesOnly: false,
+    marker: false
   });
 
   const toggleModal = () => {
@@ -49,10 +58,19 @@ export default function AllRecipes() {
       [category]: Object.keys(prevFilters[category]).reduce((acc, key) => ({
         ...acc,
         [key]: key === value
-      }), {})
+      }), {}),
+      marker: true
     }));
   };
 
+  const handleSearch = (text: string) => {
+    setSearch(text);
+    const filtered = recipes.filter(recipe =>
+      recipe.name.toLowerCase().includes(text.toLowerCase()) ||
+      recipe.description.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredRecipes(filtered);
+  };
   const applyFilters = useCallback(() => {
     let filtered = [...recipes];
     console.log('Iniciando filtragem...');
@@ -97,27 +115,53 @@ export default function AllRecipes() {
 
     setFilteredRecipes(filtered);
     setFilterVisible(false);
+    setFilters(prev => ({
+      ...prev,
+      marker: true
+    }));
   }, [filters, recipes]);
 
   const handleSwitchChange = (value: boolean) => {
     setFilters(prev => ({
       ...prev,
-      favoritesOnly: value
+      favoritesOnly: value,
+      marker: true
     }));
   };
 
+  const resetFilterCounter = () => {
+    setFilters({
+      orderBy: {
+        relevance: false,
+        date: false,
+        dataEdicao: false
+      },
+      properties: {
+        Todos: false,
+        MinhasReceitas: false,
+        DoAplicativo: false
+      },
+      favoritesOnly: false,
+      marker: false
+    });
+  };
+
+
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <View style={styles.container}>
-      <View >
-        <Header title='Receitas' onPress={() => Alert.alert('Recipes added')} />
-      </View>
-
+      <Header
+        title='Receitas'
+        icon='arrow-left'
+        onPress={() => navigation.goBack()}
+        plus={true}
+        onPlusPress={() => navigation.navigate('NewAddRecipiesScreen')}
+      />
 
       <View style={styles.content}>
-        <Input placeholder='Pesquisar receita' />
+        <Input placeholder='Pesquisar receita' onChangeText={handleSearch} />
         <FilterButton icon='filter' onPress={toggleModal} />
-
-
       </View>
       <View style={styles.totalRecipes}>
         <Text style={styles.totalRecipesText}>Foram encontradas
@@ -129,14 +173,12 @@ export default function AllRecipes() {
         data={filteredRecipes}
         renderItem={({ item }) => (
           <ListItem item={item} />
-
         )}
         keyExtractor={item => item.id.toString()}
         showsVerticalScrollIndicator={false}
         numColumns={2}
         ListEmptyComponent={() => (
           <View style={{
-
             height: 565,
             flex: 1,
             justifyContent: 'center',
@@ -150,8 +192,6 @@ export default function AllRecipes() {
         )}
       />
 
-
-
       {
         isFilterVisible && (
           <View style={styles.overlay}>
@@ -159,8 +199,23 @@ export default function AllRecipes() {
               <View style={styles.modalContent}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>Filtro e Ordenação</Text>
-                  <Pressable onPress={toggleModal}>
-                    <Feather name='x' size={18} color={theme.colors.cardTextColor} />
+                  <Pressable onPress={() => { resetFilterCounter(); }}>
+                    <View style={styles.modalCloseButton}>
+                      <Image source={RefressIcon} style={styles.modalCloseButtonIcon} />
+
+                      {filters.marker && (
+                        <View style={styles.modalCloseButtonText}>
+                          <Text style={styles.modalCloseButtonNumber}>
+                            {Object.values(filters.orderBy).filter(Boolean).length +
+                              Object.values(filters.properties).filter(Boolean).length +
+                              (filters.favoritesOnly ? 1 : 0)}
+                          </Text>
+                        </View>
+                      )}
+
+
+                    </View>
+
                   </Pressable>
                 </View>
 
@@ -169,10 +224,8 @@ export default function AllRecipes() {
                   style={{ width: '100%', paddingBottom: 80 }}
                 >
                   <View style={{
-
                     flexDirection: 'column',
                     gap: 10,
-                    // Added padding for better visualization
                   }}>
                     <View>
                       <Text style={styles.filterTitle}>Ordenar por</Text>
@@ -189,7 +242,6 @@ export default function AllRecipes() {
                       </View>
                     </View>
 
-
                     <Text style={styles.filterTitle}>Propriedades</Text>
                     <View style={{ paddingHorizontal: 10, gap: 10 }}>
                       <ButtonRadio
@@ -201,11 +253,9 @@ export default function AllRecipes() {
                         selectedValue={Object.entries(filters.properties).find(([_, value]) => value)?.[0] || ''}
                         onValueChange={(value) => handleSelect('properties', value)}
                       />
-
                     </View>
                     <View style={styles.filterFavoriteAresContainer}>
                       <Text style={styles.filterTitle}>Somente Favoritas</Text>
-
                     </View>
                     <SwitchComponent
                       value={filters.favoritesOnly}

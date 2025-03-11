@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffff',
   },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: theme.colors.cardTextColor,
+    fontFamily: theme.fontsRoboto.Bold,
+  },
   content: {
     width: '85%',
     gap: 10,
@@ -46,6 +52,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     width: '70%',
+    marginBottom: 20
   },
   emptyListText: {
     width: '100%',
@@ -116,5 +123,39 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
     width: '100%'
+  },
+  modalCloseButton: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCloseButtonIcon: {
+    width: 38,
+    height: 38,
+  },
+  modalCloseButtonText: {
+    position: 'absolute',
+    top: 10,
+    right: -8,
+    backgroundColor: '#DC1637',
+    width: 20,
+    height: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalCloseButtonNumber: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  modalCloseButtonTextContainer: {
+    backgroundColor: '#66324B',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
   }
 })

@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../../components/Header';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import styles from './styles';
 import { theme } from '../../../global/theme';
 import { useAuth } from '../../../context/AuthContext';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
+import { ERoutes } from '../../../router/mainStacks';
 
 // Update the type definition
 type ProductRouteParams = {
@@ -46,23 +46,28 @@ export default function ProductScreen({ route }: ProductScreenProps) {
   }
 
   const { name, description, image } = item;
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(item.favorite); // Initialize favorite state with item's favorite status
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { setData, user } = useAuth();
-
-
+  const { user } = useAuth();
 
   function handleFavorite() {
     setFavorite(prevFavorite => !prevFavorite);
   }
 
   function handlePrepare() {
-    navigation.navigate('Prepare', { item });
+    navigation.navigate('PrepareScreen', { item }); // Use ERoutes for navigation
   }
 
   return (
     <View style={styles.container}>
-      <Header title={name} />
+      <Header
+        icon='arrow-left'
+        title="Receita"
+        onPress={() => navigation.navigate('Home' as never)}
+        more={true}
+        onMorePress={() => Alert.alert('more')}
+
+      />
 
       <View style={styles.containerImage}>
         <Image source={{ uri: image }} style={styles.image} />
@@ -71,7 +76,7 @@ export default function ProductScreen({ route }: ProductScreenProps) {
       <View style={styles.containerTitle}>
         <View>
           <Text style={styles.title}>{name}</Text>
-          <Text>Criado por:{user.email}</Text>
+          <Text>Criado por: {user.email}</Text>
         </View>
         <TouchableOpacity onPress={handleFavorite}>
           <MaterialIcons
@@ -84,15 +89,11 @@ export default function ProductScreen({ route }: ProductScreenProps) {
 
       <View style={styles.containerDescription}>
         <Text style={styles.description}>{description}</Text>
-
       </View>
 
       <View style={styles.containerButton}>
         <Button title='Preparar' onPress={handlePrepare} />
       </View>
-
-
-
     </View>
   );
 }

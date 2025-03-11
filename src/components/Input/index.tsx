@@ -9,6 +9,7 @@ interface InputProps extends TextInputProps {
   secureTextEntry?: boolean;
   icon?: boolean;
   search?: boolean;
+  nameIcon?: keyof typeof MaterialIcons.glyphMap;
 
 }
 
@@ -18,6 +19,7 @@ const Input = forwardRef<TextInput, InputProps>(
     icon = false,
     search,
     secureTextEntry,
+    nameIcon,
     ...rest
   }
     , ref) => {
@@ -49,6 +51,13 @@ const Input = forwardRef<TextInput, InputProps>(
 
           </TouchableOpacity>
         )}
+        {
+          icon && (
+            <TouchableOpacity onPress={() => setShowPassword(prev => !prev)} style={styles.iconButton}>
+              {nameIcon && <MaterialIcons name={nameIcon} size={24} color={theme.colors.cardTextColor} />}
+            </TouchableOpacity>
+          )
+        }
       </View>
     );
   });
