@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Modal, FlatList, Pressable } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Modal, FlatList, Pressable, type TextInput } from 'react-native';
 import Input from '../../../../components/Input';
 import { Feather } from '@expo/vector-icons';
 import { theme } from '../../../../global/theme';
@@ -9,19 +9,11 @@ import { categoriesBase } from '../../../../mocks/CategoriesBase';
 import { unidadeMedida } from '../../../../mocks/UnidadeMedida';
 import RefressIcon from '../../../../assets/img/icons/repeat.png'
 
+
 interface BasicInfoProps {
   formData: any;
   updateFormData: (data: any) => void;
 }
-
-const categories = [
-  { id: '1', name: 'Sobremesas' },
-  { id: '2', name: 'Pratos Principais' },
-  { id: '3', name: 'Bebidas' },
-  { id: '4', name: 'Lanches' },
-  { id: '5', name: 'Saladas' },
-];
-
 export function BasicInfo({ formData, updateFormData }: BasicInfoProps) {
   const [image, setImage] = useState<string | null>(formData.image || null);
   const [showCategoryPicker, setShowCategoryPicker] = useState(false);
@@ -51,12 +43,15 @@ export function BasicInfo({ formData, updateFormData }: BasicInfoProps) {
     updateFormData({ unit });
     setShowUnitPicker(false);
   };
+  const RefInput = useRef<TextInput>(null);
+  const RefTextArea = useRef<TextInput>(null);
+
 
   return (
     <View style={styles.container}>
       <Text>Defina as informações da receita</Text>
       <ScrollView style={styles.scrollView}>
-        <TouchableOpacity style={styles.imageSelector} onPress={handleImagePicker}>
+        <TouchableOpacity style={styles.imageSelector} onPress={handleImagePicker} >
           <View style={styles.imageSelectorContent}>
             <View style={styles.imageSelectorIcon}>
               {formData.image ? (
@@ -71,10 +66,13 @@ export function BasicInfo({ formData, updateFormData }: BasicInfoProps) {
 
         <View style={styles.inputContainer}>
           <Input
+            ref={RefInput}
             placeholder="Nome da receita"
             value={formData.name}
             onChangeText={(text) => updateFormData({ name: text })}
             style={styles.input}
+            onSubmitEditing={() => setShowCategoryPicker(true)}
+            keyboardType='default'
           />
         </View>
         <TouchableOpacity style={styles.unitContainer} onPress={() => setShowCategoryPicker(true)}>
@@ -120,10 +118,13 @@ export function BasicInfo({ formData, updateFormData }: BasicInfoProps) {
 
         <View style={styles.inputContainer}>
           <TextArea
+            ref={RefTextArea}
             placeholder="Descrição da receita"
             value={formData.description}
             onChangeText={(text) => updateFormData({ description: text })}
             style={styles.textArea}
+            onSubmitEditing={() => setShowUnitPicker(true)}
+            returnKeyType='next'
           />
         </View>
 
@@ -133,6 +134,8 @@ export function BasicInfo({ formData, updateFormData }: BasicInfoProps) {
             value={formData.unit}
             editable={false}
             style={styles.input}
+            onSubmitEditing={() => setShowUnitPicker(true)}
+            returnKeyType='done'
           />
           <TouchableOpacity style={styles.iconButton} onPress={() => setShowUnitPicker(true)}>
             <Image source={RefressIcon} style={styles.iconImage} />

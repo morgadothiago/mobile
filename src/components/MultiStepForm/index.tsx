@@ -55,34 +55,65 @@ export function MultiStepForm({ steps, onComplete }: MultiStepFormProps) {
         })}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#C8102E', // Red background
-              borderRadius: 25, // Rounded corners
-              paddingVertical: 12, // Vertical padding
-              paddingHorizontal: 20, // Horizontal padding
-              flexDirection: 'row', // Align icon and text
-              alignItems: 'center', // Center vertically
-              justifyContent: 'center', // Center horizontally
-            }}
-            onPress={() => {
-              if (currentStep < steps.length - 1) {
-                setCurrentStep(prev => prev + 1);
-              } else {
-                onComplete(formData);
-              }
-            }}
-          >
-            <Text style={{
-              color: '#FFFFFF', // White text color
-              fontSize: 16, // Font size
-              fontWeight: 'bold', // Bold text
-              marginRight: 8, // Space between text and icon
-            }}>
-              {currentStep === steps.length - 1 ? "Concluir" : "Próximo"}
-            </Text>
-            <Feather name="arrow-right" size={16} color="#FFFFFF" /> {/* Arrow icon */}
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+              {currentStep > 0 && (
+                <TouchableOpacity
+                  style={{
+                    width: currentStep === 1 || currentStep === 2 ? '50%' : '100%',
+                    backgroundColor: '#C8102E', // Red background
+                    borderRadius: 25, // Rounded corners
+                    paddingVertical: 12, // Vertical padding
+                    paddingHorizontal: 20, // Horizontal padding
+                    flexDirection: 'row', // Align icon and text
+                    alignItems: 'center', // Center vertically
+                    justifyContent: 'center', // Center horizontally
+                    marginRight: 10
+
+                  }}
+                  onPress={() => {
+                    setCurrentStep(prev => prev - 1);
+                  }}
+                >
+                  <Feather name="arrow-left" size={16} color="#FFFFFF" /> {/* Back arrow icon */}
+                </TouchableOpacity>
+              )}
+
+              <TouchableOpacity
+                style={{
+                  width: currentStep === 1 || currentStep === 2 ? '50%' : '100%',
+                  backgroundColor: '#C8102E', // Red background
+                  borderRadius: 25, // Rounded corners
+                  paddingVertical: 12, // Vertical padding
+                  paddingHorizontal: 20, // Horizontal padding
+                  flexDirection: 'row', // Align icon and text
+                  alignItems: 'center', // Center vertically
+                  justifyContent: 'center', // Center horizontally
+                  marginRight: 10
+                }}
+                onPress={() => {
+                  if (currentStep < steps.length - 1) {
+                    setCurrentStep(prev => prev + 1);
+                  } else {
+                    onComplete(formData);
+                  }
+                }}
+              >
+                <Text style={{
+                  color: '#FFFFFF', // White text color
+                  fontSize: 16, // Font size
+                  fontWeight: 'bold', // Bold text
+                  marginRight: 8, // Space between text and icon
+                }}>
+
+                  {currentStep === steps.length - 1 ?
+                    <Feather name="check" size={16} color="#FFFFFF" /> :
+                    <Feather name="arrow-right" size={16} color="#FFFFFF" />}
+                </Text>
+
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView >

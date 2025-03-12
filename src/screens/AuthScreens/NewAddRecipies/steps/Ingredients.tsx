@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { theme } from '../../../../global/theme';
+import { RecipeListItem } from '../../../../components/RecipeListItem';
+import { EtapasBase } from '../../../../mocks/EtapasBase';
+import { StepFormSheet } from '../../../../components/StepFormSheet';
+import { BottmSheetModal } from '../../../../components/SheetPrepare';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 interface Ingredient {
   id: number;
@@ -15,6 +21,7 @@ interface IngredientsProps {
 
 export function Ingredients({ formData, updateFormData }: IngredientsProps) {
   const [ingredients, setIngredients] = useState<Ingredient[]>(formData.ingredients || []);
+  const [etapaModal, setEtapaModal] = useState(false);
 
   const addIngredient = () => {
     const newIngredient = {
@@ -28,93 +35,100 @@ export function Ingredients({ formData, updateFormData }: IngredientsProps) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.subtitle}>Defina as etapas da receita.</Text>
+    <>
+      <View style={[styles.container, etapaModal && styles.headerActive]}>
+        <Text style={styles.subtitle}>Defina as etapas da receita.</Text>
 
-      {ingredients.map((ingredient, index) => (
-        <View key={ingredient.id} style={styles.ingredientItem}>
-          <View style={styles.numberContainer}>
-            <Text style={styles.number}>{index + 1}</Text>
-          </View>
-          <Text style={styles.ingredientText}>
-            Massa - bolo de cenoura
-          </Text>
-          <View style={styles.actions}>
-            <TouchableOpacity style={styles.actionButton}>
-              <Feather name="edit-2" size={20} color="#DC1637" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <Feather name="trash-2" size={20} color="#DC1637" />
-            </TouchableOpacity>
-          </View>
+        {EtapasBase.map((step) => (
+          <RecipeListItem
+            key={step.id}
+            title={step.title}
+            steps={step.steps}
+            quantity={step.quantity}
+            editable={step.editable}
+            remove={step.remove}
+          />
+        ))}
+
+        <View style={styles.addButtonContainer}>
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => setEtapaModal(true)}
+          >
+            <Text style={styles.addButtonText}>INCLUIR ETAPA</Text>
+          </TouchableOpacity>
         </View>
-      ))}
+      </View>
 
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={addIngredient}
-      >
-        <Text style={styles.addButtonText}>INCLUIR ETAPA</Text>
-      </TouchableOpacity>
-    </View>
+      {etapaModal && (
+        <StepFormSheet
+          visible={etapaModal}
+          onClose={() => setEtapaModal(false)}
+          onComplete={(data) => {
+            console.log('Form data:', data);
+            setEtapaModal(false);
+          }}
+        />
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 16,
+    paddingHorizontal: 16,
+    backgroundColor: '#fff',
+  },
+  headerActive: {
+    backgroundColor: '#fff',
   },
   subtitle: {
     fontSize: 14,
     color: '#7A7A80',
     marginBottom: 16,
   },
-  ingredientItem: {
+  addButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F4F5F6',
-    borderRadius: 4,
-    padding: 16,
-    marginBottom: 8,
-  },
-  numberContainer: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#DC1637',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  number: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  ingredientText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#47474D',
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  actionButton: {
-    padding: 4,
   },
   addButton: {
-    height: 56,
-    backgroundColor: '#DC1637',
-    borderRadius: 4,
+    width: 230,
+    height: 49,
+    borderWidth: 1,
+    borderColor: '#DC1637',
+    borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 16,
   },
   addButtonText: {
-    color: '#FFFFFF',
-    fontSize: 15,
+    color: theme.colors.cardTextColor,
+    fontSize: 18,
+    fontFamily: theme.fontsRaleway.Bold,
     fontWeight: 'bold',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: theme.colors.cardTextColor,
+  },
+  closeButton: {
+    padding: 8,
+  },
+  modalContent: {
+    flex: 1,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 }); 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { TextInput, View, TextInputProps, StyleSheet } from 'react-native';
 import { theme } from '../../global/theme';
 
@@ -6,10 +6,11 @@ interface TextAreaProps extends TextInputProps {
   error?: boolean;
 }
 
-export function TextArea({ error, ...rest }: TextAreaProps) {
+export const TextArea = forwardRef<TextInput, TextAreaProps>(({ error, ...rest }, ref) => {
   return (
     <View style={styles.container}>
       <TextInput
+        ref={ref}
         style={[
           styles.input,
           error && styles.inputError,
@@ -23,7 +24,7 @@ export function TextArea({ error, ...rest }: TextAreaProps) {
       />
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
