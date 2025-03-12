@@ -5,12 +5,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: '100%',
-    height: 50,
-    borderRadius: 10,
+    height: 56,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#f3f5f7'
-
+    backgroundColor: '#F4F5F6',
   },
   headerTitle: {
     color: theme.colors.btnTextColor,
@@ -24,8 +23,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingHorizontal: 10,
-    width: '100%',
+    paddingHorizontal: 16,
     color: theme.colors.cardTextColor,
   }
 });
